@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Eolo - Energía del Viento</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --blue-900:#024e81; /* color principal solicitado */
+      --blue-700:#046a9f;
+      --soft:#eaf4ff;
+      --muted:#6b7280;
+      --card-shadow: 0 10px 30px rgba(2,34,75,0.09);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Inter",system-ui,Arial;background:linear-gradient(180deg,#fbfdff,#f3f8ff);color:var(--blue-900);-webkit-font-smoothing:antialiased}
+    a{color:inherit}
+    header{position:sticky;top:0;z-index:90;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:linear-gradient(90deg, rgba(2,78,129,0.98), rgba(2,64,105,0.98));color:white;box-shadow:0 8px 26px rgba(2,34,75,0.12);backdrop-filter: blur(6px)}
+    .brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:white}
+    .brand img{height:48px;border-radius:8px;background:rgba(255,255,255,0.06);padding:4px}
+    .brand h1{font-size:18px;margin:0;font-weight:800}
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{color:white;text-decoration:none;font-weight:600;padding:8px 12px;border-radius:10px;transition:background .18s}
+    nav a:hover{background:rgba(255,255,255,0.06)}
+    .cta{background:white;color:var(--blue-900);padding:8px 14px;border-radius:10px;font-weight:700}
+    .menu-toggle{display:none}
+    @media(max-width:880px){nav{display:none;position:absolute;right:18px;top:66px;flex-direction:column;width:260px;background:var(--blue-900);padding:12px;border-radius:10px} .menu-toggle{display:block}}
+    .hero{display:flex;gap:36px;align-items:center;justify-content:space-between;padding:56px 6vw;margin:22px auto;max-width:1300px;background:linear-gradient(180deg,rgba(255,255,255,0.75),rgba(255,255,255,0.5));border-radius:20px;box-shadow:var(--card-shadow);overflow:hidden}
+    .hero-left{flex:1;min-width:260px}
+    .eyebadge{display:inline-block;background:var(--soft);color:var(--blue-900);padding:6px 10px;border-radius:999px;font-weight:700;margin-bottom:12px;font-size:15px}
+    .hero h2{font-size:34px;margin:6px 0 12px}
+    .lead{color:var(--muted);max-width:70ch;margin:0 auto 12px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn-primary{background:var(--blue-900);color:white;padding:12px 18px;border-radius:10px;border:none;cursor:pointer;font-weight:700;box-shadow:0 10px 26px rgba(2,78,129,0.12)}
+    .btn-primary:hover{background:var(--blue-700)}
+    .btn-ghost{background:transparent;color:var(--blue-900);padding:12px 16px;border-radius:10px;border:2px solid rgba(2,78,129,0.08);cursor:pointer;font-weight:700}
+    .hero-right{flex:1;display:flex;align-items:center;justify-content:center}
+    .hero-art{width:92%;border-radius:16px;box-shadow:0 18px 40px rgba(2,34,75,0.08);overflow:hidden;border:6px solid rgba(255,255,255,0.6)}
+    .hero-art img{width:100%;display:block;object-fit:cover;height:360px}
+    .banners{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px auto;max-width:1300px;padding:0 6vw}
+    .banner{border-radius:12px;overflow:hidden;box-shadow:var(--card-shadow)}
+    .banner img{width:100%;height:120px;object-fit:cover;display:block}
+    section{padding:52px 6vw}
+    .cards{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));display:grid;gap:18px}
+    .card{background:white;border-radius:12px;padding:18px;box-shadow:0 12px 30px rgba(2,34,75,0.06);display:flex;flex-direction:column;gap:12px}
+    .card img{width:100%;height:160px;object-fit:cover;border-radius:8px}
+    .prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:center}
+    .prod-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .prod-gallery img{width:100%;height:180px;object-fit:cover;border-radius:10px}
+    .contact-panel{background:linear-gradient(90deg,#eaf6ff,#f7fff9);border-radius:16px;padding:22px;box-shadow:var(--card-shadow)}
+    form{display:grid;gap:12px}
+    label{font-weight:600;color:var(--blue-900);font-size:14px}
+    input[type="text"],input[type="email"],select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(2,34,75,0.08);font-size:14px;background:white}
+    textarea{min-height:120px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-actions{display:flex;gap:10px;align-items:center}
+    .msg{padding:10px;border-radius:10px;font-weight:700;display:none}
+    .msg.success{background:linear-gradient(90deg,#dffcf0,#e6fff7);color:#00664f}
+    .msg.error{background:#fff0f0;color:#8a1a1a}
+    footer{background:linear-gradient(90deg,#013a5a,#012836);color:white;padding:22px;text-align:center;border-top:4px solid rgba(255,255,255,0.03)}
+    @media(max-width:980px){.hero{flex-direction:column;padding:32px}.hero-art img{height:260px}.banners{grid-template-columns:repeat(2,1fr)}.prod-grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+    @media(max-width:560px){.banners{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="brand" href="#home">
+      <img src="images/logo.jpg" alt="Logo Eolo" data-key="logo">
+      <h1>Eolo</h1>
+    </a>
+
+    <div style="display:flex;align-items:center;gap:12px">
+      <nav id="nav">
+        <a href="#que-hacemos">Qué hacemos</a>
+        <a href="#quienes-somos">Quiénes somos</a>
+        <a href="#produccion">Producción</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <button class="cta" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Pedir información</button>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-hidden="true" style="margin-left:8px">☰</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home" aria-label="Hero">
+      <div class="hero-left">
+        <div class="eyebadge">Ahorrate un vueltaje!</div>
+        <h2>Impulsamos el futuro con la fuerza del viento</h2>
+        <p class="lead">Diseñamos, fabricamos e instalamos aerogeneradores para hogares, comunidades y proyectos industriales.</p>
+        <div class="actions">
+          <button class="btn-primary" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Quiero información</button>
+          <button class="btn-ghost" onclick="document.getElementById('produccion').scrollIntoView({behavior:'smooth'})">Ver producción</button>
+        </div>
+        <div class="kpi" style="margin-top:18px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap">
+          <div class="item" style="background:white;padding:14px;border-radius:10px;box-shadow:0 8px 24px rgba(2,34,75,0.05);min-width:140px;text-align:center"><h4 style="margin:0">+120</h4><p style="margin:0;color:var(--muted)">Unidades instaladas</p></div>
+          <div class="item" style="background:white;padding:14px;border-radius:10px;box-shadow:0 8px 24px rgba(2,34,75,0.05);min-width:140px;text-align:center"><h4 style="margin:0">Producción</h4><p style="margin:0;color:var(--muted)">Serie local y escalable</p></div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <figure class="hero-art" role="img" aria-label="Aerogenerador">
+          <img src="images/aerogenerador.jpg" alt="Aerogenerador" data-key="aero">
+        </figure>
+      </div>
+    </section>
+
+    <div class="banners" aria-hidden="false">
+      <div class="banner"><img src="images/banner1.jpg" alt="Banner 1" data-key="banner1"></div>
+      <div class="banner"><img src="images/banner2.jpg" alt="Banner 2" data-key="banner2"></div>
+      <div class="banner"><img src="images/banner3.jpg" alt="Banner 3" data-key="banner3"></div>
+    </div>
+
+    <section id="que-hacemos">
+      <h2>Qué hacemos</h2>
+      <p class="lead">Ofrecemos fabricación, instalación, mantenimiento, charlas educativas y repuestos.</p>
+
+      <div class="cards" style="margin-top:18px">
+        <article class="card">
+          <img src="images/plano.jpg" alt="Diseño e innovación" data-key="banner4">
+          <h3>Diseño e innovación</h3>
+          <p>Nos adaptamos a vos, diseñamos aerogeneradores segun tu terreno y necesidades</p>
+        </article>
+
+        <article class="card">
+          <img src="images/produccion_estator.jpg" alt="Producción estator" data-key="prod1">
+          <h3>Producción y montaje</h3>
+          <p>Procesos controlados y con el mejor equipo para entregar equipos robustos y confiables.</p>
+        </article>
+
+        <article class="card">
+          <img src="images/produccion_resina.jpg" alt="Resina y acabado" data-key="prod2">
+          <h3>Acabado y controles de calidad</h3>
+          <p>Todos nuestros equipos son probados y tienen garantia</p>
+        </article>
+
+        <article class="card">
+          <img src="images/banner4.jpg" alt="Planos y proyectos" data-key="plano">
+          <h3>Mantenimiento</h3>
+          <p>Garantizamos la durabilidad de tu aerogenerador ¡No dejes de producir!</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="quienes-somos">
+      <h2>Quiénes somos</h2>
+      <p class="lead">Equipo tecnico con experiencia en ingeniería, fabricación y educación ambiental. Queremos lo mejor para el medio ambiente.</p>
+
+      <div style="margin-top:18px;display:flex;gap:18px;flex-wrap:wrap;justify-content:center">
+        <div style="max-width:640px" class="card">
+          <h3>Nuestra misión</h3>
+          <p>Impulsar el futuro con energía limpia, brindando soluciones eólicas eficientes y sostenibles para un mundo mejor.</p>
+          <h3>Valores</h3>
+          <p>Transparencia; calidad; sostenibilidad; capacitación y trabajo con comunidades locales.</p>
+        </div>
+
+        <div style="max-width:360px" class="card">
+          <h3>Servicios</h3>
+          <ol>
+            <li>Aerogenerador</li>
+            <li>Aerogenerador + instalación</li>
+            <li>Mantenimiento</li>
+            <li>Charlas educativas</li>
+            <li>Pack de repuestos</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="produccion">
+      <h2>Producción</h2>
+      <p class="lead">Bobinado, resinado y control de calidad para garantizar unidades listas para instalación.</p>
+
+      <div class="prod-grid" style="margin-top:18px">
+        <div>
+          <div class="prod-gallery">
+            <img src="images/produccion_estator.jpg" alt="Estator" data-key="prod1b">
+            <img src="images/produccion_resina.jpg" alt="Resina" data-key="prod2b">
+            <img src="images/produccion_resina2.jpg" alt="Resina 2" data-key="prod3b">
+            <img src="images/banner1.jpg" alt="Proceso" data-key="banner1b">
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <h3>Líneas de montaje</h3>
+            <p>Líneas modulares para lotes piloto y escalado, con pruebas funcionales en cada unidad.</p>
+            <h3 style="margin-top:8px">Planos y certificaciones</h3>
+            <p>Planos y procedimientos de pruebas para garantizar funcionamiento en distintas condiciones.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto">
+      <h2>Contacto y solicitud</h2>
+      <p class="lead">Completa el formulario y te contactamos para cotizar o coordinar una visita técnica.</p>
+
+      <div style="margin-top:18px;max-width:1100px;margin-left:auto;margin-right:auto;display:grid;grid-template-columns:1fr 420px;gap:18px">
+        <div class="contact-panel">
+          <form id="leadForm" onsubmit="return handleSubmit(event)" novalidate>
+            <div class="row">
+              <div>
+                <label for="nombre">Nombre completo</label>
+                <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" required>
+              </div>
+              <div>
+                <label for="correo">Correo electrónico</label>
+                <input id="correo" name="correo" type="email" placeholder="tu@ejemplo.com" required>
+              </div>
+            </div>
+
+            <div>
+              <label for="producto">Producto de interés</label>
+              <select id="producto" name="producto" required>
+                <option value="">-- Selecciona --</option>
+                <option value="Aerogenerador">Aerogenerador</option>
+                <option value="Aerogenerador + instalacion">Aerogenerador + instalación</option>
+                <option value="Mantenimiento">Mantenimiento</option>
+                <option value="Charlas educativas">Charlas educativas</option>
+                <option value="Pack de repuestos">Pack de repuestos</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="mensaje">Mensaje (opcional)</label>
+              <textarea id="mensajeInput" name="mensaje" placeholder="Cuéntanos el proyecto, ubicación o preguntas"></textarea>
+            </div>
+
+            <div class="form-actions" style="margin-top:6px">
+              <button class="btn-primary" type="submit">Enviar solicitud</button>
+              <button type="button" class="btn-ghost" onclick="resetForm()">Limpiar</button>
+            </div>
+
+            <div style="margin-top:12px">
+              <div id="formMsg" class="msg" role="status"></div>
+              <p style="margin-top:8px;color:var(--muted)">Te responderemos en 48-72h hábiles.</p>
+            </div>
+          </form>
+        </div>
+
+        <aside class="card" style="height:100%">
+          <h3>Información de contacto</h3>
+          <p style="color:var(--muted)">Eolo • Producción local y servicio técnico</p>
+          <p style="margin:8px 0"><strong>Tel:</strong> +54 9 297 533 8145</p>
+          <p style="margin:8px 0"><strong>Email:</strong> eolosrl@outlook.com.ar</p>
+
+          <h3 style="margin-top:14px">Ubicación</h3>
+          <p style="color:var(--muted)">General Joaquin 0, Comodoro Rivadavia, Chubut, Argentina</p>
+          <div style="margin-top:10px">
+            <img src="images/ubicacion.jpg" alt="Plano de ubicación" style="width:100%;height:140px;object-fit:cover;border-radius:8px" data-key="planoSmall">
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section style="padding-top:28px;padding-bottom:60px">
+      <h2>Preguntas frecuentes</h2>
+      <div style="max-width:1100px;margin:18px auto;display:grid;gap:10px">
+        <details class="card"><summary style="font-weight:700">¿Qué garantías ofrecen?</summary><p style="margin-top:8px;color:var(--muted)">Garantía en componentes críticos y asistencia técnica según contrato.</p></details>
+        <details class="card"><summary style="font-weight:700">¿Hacen instalaciones remotas?</summary><p style="margin-top:8px;color:var(--muted)">Sí, coordinamos envíos e instalación con partners.</p></details>
+        <details class="card"><summary style="font-weight:700">¿Puedo recibir capacitación?</summary><p style="margin-top:8px;color:var(--muted)">Ofrecemos charlas educativas y capacitaciones técnicas.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;gap:12px;align-items:center">
+        <img src="images/logo.jpg" alt="Eolo" style="height:36px" data-key="logoFoot">
+        <div style="font-weight:700">Eolo</div>
+      </div>
+      <div style="color:#bcd8ff">© <span id="year"></span> Eolo. Todos los derechos reservados.</div>
+      <div class="socials">
+        <img src="images/banner1.jpg" alt="social" data-key="social1" style="height:36px">
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu(){ const nav = document.getElementById('nav'); nav.style.display = (nav.style.display === 'flex') ? '' : 'flex'; }
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function validateEmail(email){ const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; return re.test(email); }
+
+    function handleSubmit(e){
+      e.preventDefault();
+      const nombre = document.getElementById('nombre').value.trim();
+      const correo = document.getElementById('correo').value.trim();
+      const producto = document.getElementById('producto').value;
+      if(!nombre || nombre.length < 2){ showMsg('Por favor ingresa un nombre válido','error'); return false; }
+      if(!validateEmail(correo)){ showMsg('Por favor ingresa un correo válido','error'); return false; }
+      if(!producto){ showMsg('Selecciona el producto de interés','error'); return false; }
+      showMsg('Solicitud enviada correctamente. Gracias, nos contactamos pronto.','success');
+      document.getElementById('leadForm').reset();
+      return false;
+    }
+
+    function showMsg(text,type){
+      const el = document.getElementById('formMsg');
+      el.textContent = text;
+      el.className = 'msg ' + (type==='success' ? 'success' : 'error');
+      el.style.display = 'block';
+      setTimeout(()=>{ el.style.display='none'; },6000);
+    }
+
+    function resetForm(){ document.getElementById('leadForm').reset(); document.getElementById('formMsg').style.display='none'; }
+
+    // Intentos de fallback para imágenes (si es necesario)
+    function trySetImg(imgEl, candidates){ let idx = 0; function next(){ if(idx>=candidates.length) return; imgEl.src = candidates[idx++]; } imgEl.addEventListener('error', next); next(); }
+    document.addEventListener('DOMContentLoaded', () => {
+      const map = {
+        'aero': ['images/aerogenerador.jpg'],
+        'logo': ['images/logo.jpg'],
+        'banner1': ['images/banner1.jpg'],
+        'banner2': ['images/banner2.jpg'],
+        'banner3': ['images/banner3.jpg'],
+        'banner4': ['images/banner4.jpg'],
+        'plano': ['images/plano.jpg'],
+        'prod1': ['images/produccion_estator.jpg'],
+        'prod2': ['images/produccion_resina.jpg'],
+        'prod3': ['images/produccion_resina2.jpg']
+      };
+      Object.keys(map).forEach(k => { const el = document.querySelector('[data-key="'+k+'"]'); if(el) trySetImg(el, map[k]); });
+    });
+
+    (function preload(){ ['images/aerogenerador.jpg','images/logo.jpg','images/banner1.jpg','images/banner2.jpg','images/banner3.jpg','images/banner4.jpg','images/plano.jpg','images/produccion_estator.jpg','images/produccion_resina.jpg','images/produccion_resina2.jpg'].forEach(s => { const i=new Image(); i.src=s; }); })();
+  </script>
+</body>
+</html>
